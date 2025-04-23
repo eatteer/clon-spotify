@@ -1,5 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Album } from '@src/app/services/albums/Album';
+import { mapGetAlbumInfoDtoToAlbum } from '@src/app/services/albums/album.mapper';
+import { GetAlbumInfoDto } from '@src/app/services/albums/get-album-info.dto';
 import { GetAlbumTracksDto } from '@src/app/services/albums/get-album-tracks.dto';
 import { Track } from '@src/app/services/albums/track';
 import { mapGetAlbumTrackDtoToTrack } from '@src/app/services/albums/track.mapper';
@@ -11,6 +14,14 @@ import { Observable, map } from 'rxjs';
 })
 export class AlbumsService {
   private readonly http = inject(HttpClient);
+
+  public getInfo(albumId: string): Observable<Album> {
+    return this.http
+      .get<GetAlbumInfoDto>(
+        `${environment.SPOTIFY_API_BASE_URL}/albums/${albumId}`
+      )
+      .pipe(map(mapGetAlbumInfoDtoToAlbum));
+  }
 
   public getTracks(albumId: string): Observable<Track[]> {
     return this.http

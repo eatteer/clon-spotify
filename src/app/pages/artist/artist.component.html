@@ -1,8 +1,46 @@
-<p>artist works!</p>
-@if (albums$ | async; as albums){ @for (album of albums; track album.id) {
-<ul>
-  <li>
-    <a [routerLink]="['/albums', album.id]">Album: {{ album.name }}</a>
-  </li>
-</ul>
-} }
+<header class="max-w-5xl mx-auto">
+  @if(artist$ | async; as artist){
+  <div class="relative flex flex-col gap-4 -mt-20">
+    <img
+      [src]="artist.images[0]"
+      [alt]="artist.name"
+      class="w-full aspect-square md:aspect-video rounded object-cover object-center"
+    />
+    <div
+      class="absolute inset-0 flex flex-col justify-end p-4 bg-linear-to-b from-transparent to-background"
+    >
+      <p class="font-bold text-2xl lg:text-5xl lg:mb-4">{{ artist.name }}</p>
+      <p class="lg:text-lg">{{ artist.followers | number }} seguidores</p>
+      <p class="lg:text-lg">
+        {{ artist.genres | titleCaseArray }}
+      </p>
+    </div>
+  </div>
+  }
+</header>
+<main class="max-w-5xl mx-auto p-4">
+  @if (albums$ | async; as albums){
+  <h2 class="font-bold text-2xl mb-4">Albumes</h2>
+  <ul class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    @for (album of albums; track album.id) {
+    <li>
+      <a [routerLink]="['/albums', album.id]">
+        <div
+          class="flex flex-col gap-4 lg:p-2 hover:bg-accent rounded transition-all"
+        >
+          <img
+            [src]="album.image"
+            [alt]="album.name"
+            class="w-full aspect-square rounded object-cover"
+          />
+          <div>
+            <p class="font-bold line-clamp-1">{{ album.name }}</p>
+            <p class="text-sm">{{ album.releaseDate | date }}</p>
+          </div>
+        </div>
+      </a>
+    </li>
+    }
+  </ul>
+  }
+</main>

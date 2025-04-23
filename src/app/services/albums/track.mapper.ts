@@ -7,5 +7,6 @@ export function mapGetAlbumTrackDtoToTrack(dto: Item): Track {
     name: dto.name,
     duration: dto.duration_ms,
     trackUrl: dto.external_urls.spotify,
+    artists: dto.artists.map((artist) => artist.name),
   };
 }

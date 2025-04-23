@@ -1,8 +1,32 @@
-<p>search works!</p>
-@if (artists$ | async; as artists){ @for (artist of artists; track artist.id) {
-<ul>
-  <li>
-    <a [routerLink]="['/artists', artist.id]">Artist: {{ artist.name }}</a>
-  </li>
-</ul>
-} }
+<main class="max-w-5xl mx-auto p-4">
+  @if (artists$ | async; as artists) { @if (artists.length > 0) {
+  <ul class="flex flex-col lg:grid lg:grid-cols-4 gap-4">
+    @for (artist of artists; track artist.id) {
+    <li>
+      <a [routerLink]="['/artists', artist.id]">
+        <div
+          class="flex lg:flex-col lg:p-2 gap-4 hover:bg-accent rounded transition-all"
+        >
+          <img
+            [src]="artist.image"
+            [alt]="artist.name"
+            class="size-16 lg:w-full lg:h-full lg:aspect-square rounded object-cover"
+          />
+          <div>
+            <p class="font-bold line-clamp-1">{{ artist.name }}</p>
+            <p class="text-sm line-clamp-1">
+              {{ artist.followers | number }} seguidores
+            </p>
+            <p class="text-sm line-clamp-1">
+              {{ artist.genres | titleCaseArray }}
+            </p>
+          </div>
+        </div>
+      </a>
+    </li>
+    }
+  </ul>
+  } @else {
+  <p>No artists found for this search.</p>
+  } }
+</main>

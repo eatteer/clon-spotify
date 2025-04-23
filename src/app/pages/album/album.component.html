@@ -1,8 +1,48 @@
-<p>album works!</p>
-@if (tracks | async; as tracks){ @for (track of tracks; track track.id) {
-<ul>
-  <li>
-    <a [href]="track.trackUrl" target="_blank">Track: {{ track.name }}</a>
-  </li>
-</ul>
-} }
+<header class="max-w-5xl mx-auto">
+  @if(album$ | async; as album){
+  <div class="flex flex-col lg:flex-row gap-4 pt-4">
+    <img
+      [src]="album.images[0]"
+      [alt]="album.name"
+      class="mx-auto lg:mx-0 aspect-square w-72 lg:w-48 rounded object-cover"
+    />
+    <div class="flex flex-col p-4 lg:py-0">
+      <p class="font-bold text-2xl lg:text-5xl lg:mb-4">{{ album.name }}</p>
+      <p class="lg:text-lg">
+        {{ album.releaseDate | date }} - {{ album.totalTracks }} canciones
+      </p>
+    </div>
+  </div>
+
+  }
+</header>
+<main class="max-w-5xl mx-auto p-4 lg:p-0 lg:pt-8">
+  @if (tracks$ | async; as tracks){
+  <div class="flex gap-2 w-full px-0 lg:px-2 border-b">
+    <div>Title</div>
+    <div class="ml-auto">
+      <span class="material-symbols-outlined"> schedule </span>
+    </div>
+  </div>
+  <ul class="flex flex-col gap-4 lg:gap-0 mt-4">
+    @for (track of tracks; track track.id) {
+    <li class="hover:bg-accent transition-all lg:p-2 rounded">
+      <a [href]="track.trackUrl" target="_blank">
+        <div class="flex flex-row gap-4 justify-between items-center">
+          <div class="flex flex-col">
+            <p class="font-bold line-clamp-1">{{ track.name }}</p>
+            <p class="line-clamp-1 text-muted-foreground">
+              {{ track.artists.join(", ") }}
+            </p>
+          </div>
+          <p class="text-sm line-clamp-1">
+            {{ track.duration | duration }}
+          </p>
+          <!-- <span class="material-symbols-outlined"> open_in_new </span> -->
+        </div>
+      </a>
+    </li>
+    }
+  </ul>
+  }
+</main>

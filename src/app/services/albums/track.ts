@@ -3,4 +3,5 @@ export type Track = {
   name: string;
   duration: number;
   trackUrl: string;
+  artists: string[];
 };

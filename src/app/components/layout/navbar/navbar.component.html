@@ -1,0 +1,15 @@
+<nav
+  [ngClass]="{ 'bg-background': isScrolled, 'bg-transparent': !isScrolled }"
+  class="sticky top-0 z-50 transition-all"
+>
+  <div
+    class="flex gap-4 justify-between p-4 items-center w-full max-w-5xl mx-auto"
+  >
+    @if(!isRootRoute()) {
+    <app-navigate-back-button />
+    } @else {
+    <span class="material-symbols-outlined"> music_note </span>
+    }
+    <app-search-input (search)="searchArtist($event)" />
+  </div>
+</nav>
