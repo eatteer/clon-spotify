@@ -1,0 +1,8 @@
+<p>artist works!</p>
+@if (albums$ | async; as albums){ @for (album of albums; track album.id) {
+<ul>
+  <li>
+    <a [routerLink]="['/albums', album.id]">Album: {{ album.name }}</a>
+  </li>
+</ul>
+} }

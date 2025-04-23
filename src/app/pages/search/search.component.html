@@ -1,0 +1,8 @@
+<p>search works!</p>
+@if (artists$ | async; as artists){ @for (artist of artists; track artist.id) {
+<ul>
+  <li>
+    <a [routerLink]="['/artists', artist.id]">Artist: {{ artist.name }}</a>
+  </li>
+</ul>
+} }

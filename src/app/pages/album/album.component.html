@@ -1,0 +1,8 @@
+<p>album works!</p>
+@if (tracks | async; as tracks){ @for (track of tracks; track track.id) {
+<ul>
+  <li>
+    <a [href]="track.trackUrl" target="_blank">Track: {{ track.name }}</a>
+  </li>
+</ul>
+} }
