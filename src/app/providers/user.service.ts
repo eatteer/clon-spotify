@@ -10,13 +10,22 @@ export class UserService {
     new BehaviorSubject<UserProfile | null>(null);
 
   private accessToken: string = '';
+  private refreshToken: string = '';
 
   public getAccessToken(): string {
     return this.accessToken;
   }
 
+  public getRefreshToken(): string {
+    return this.refreshToken;
+  }
+
   public setAccessToken(token: string): void {
     this.accessToken = token;
+  }
+
+  public setRefreshToken(token: string): void {
+    this.refreshToken = token;
   }
 
   public isTokenValid(): boolean {

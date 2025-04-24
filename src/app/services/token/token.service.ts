@@ -18,7 +18,10 @@ export class TokenService {
   private readonly clientSecret = environment.SPOTIFY_CLIENT_SECRET;
   private readonly endpoint = `https://accounts.spotify.com/api/token`;
 
-  public requestUserAccessToken(code: string): Observable<string> {
+  public requestUserAccessToken(code: string): Observable<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
     const urlencoded: URLSearchParams = new URLSearchParams();
 
     urlencoded.append('grant_type', 'authorization_code');
@@ -28,15 +31,23 @@ export class TokenService {
     urlencoded.append('client_secret', this.clientSecret);
 
     return this.http
-      .post<{ access_token: string }>(this.endpoint, urlencoded.toString(), {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      })
+      .post<{ access_token: string; refresh_token: string }>(
+        this.endpoint,
+        urlencoded.toString(),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
       .pipe(
         map((response) => {
           this.userService.setAccessToken(response.access_token);
-          return response.access_token;
+          this.userService.setRefreshToken(response.refresh_token);
+          return {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+          };
         }),
         catchError((error) => {
           console.error('Error requesting user access token:', error);
@@ -66,6 +77,38 @@ export class TokenService {
         catchError((error) => {
           console.error('Error refreshing app token:', error);
           return throwError(() => new Error('Failed to refresh app token'));
+        })
+      );
+  }
+
+  public refreshUserAccessToken(refreshToken: string): Observable<{
+    accessToken: string;
+    refreshToken: string;
+  }> {
+    const urlencoded: URLSearchParams = new URLSearchParams();
+
+    urlencoded.append('grant_type', 'refresh_token');
+    urlencoded.append('refresh_token', refreshToken);
+    urlencoded.append('client_id', this.clientId);
+
+    return this.http
+      .post<{ access_token: string; refresh_token: string }>(
+        this.endpoint,
+        urlencoded.toString(),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
+      .pipe(
+        map((response) => {
+          this.userService.setAccessToken(response.access_token);
+          this.userService.setRefreshToken(response.refresh_token);
+          return {
+            accessToken: response.access_token,
+            refreshToken: response.refresh_token,
+          };
         })
       );
   }

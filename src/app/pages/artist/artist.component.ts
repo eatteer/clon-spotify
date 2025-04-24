@@ -2,7 +2,7 @@ import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TitleCaseArrayPipe } from '@src/app/pipes/title-case.pipe';
-import { Album } from '@src/app/services/artists/Album';
+import { Album } from '@src/app/services/artists/album';
 import { Artist } from '@src/app/services/artists/artist';
 import { ArtistsService } from '@src/app/services/artists/artists.service';
 import { EMPTY, Observable, catchError, of, switchMap, tap } from 'rxjs';

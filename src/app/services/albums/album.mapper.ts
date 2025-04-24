@@ -1,4 +1,4 @@
-import { Album } from '@src/app/services/albums/Album';
+import { Album } from '@src/app/services/albums/album';
 import { GetAlbumInfoDto } from '@src/app/services/albums/get-album-info.dto';
 
 export function mapGetAlbumInfoDtoToAlbum(dto: GetAlbumInfoDto): Album {

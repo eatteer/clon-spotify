@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Album } from '@src/app/services/artists/Album';
+import { Album } from '@src/app/services/artists/album';
 import { mapGetArtisAlbumDtoToAlbum } from '@src/app/services/artists/album.mapper';
 import { Artist } from '@src/app/services/artists/artist';
 import { mapGetArtistInfoToArtist } from '@src/app/services/artists/artist.mapper';

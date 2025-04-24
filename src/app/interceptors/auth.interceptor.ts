@@ -6,10 +6,10 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { TOKEN_TYPE } from '@src/app/interceptors/token-context';
+import { AppService } from '@src/app/providers/app.service';
+import { UserService } from '@src/app/providers/user.service';
+import { TokenService } from '@src/app/services/token/token.service';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { AppService } from '../providers/app.service';
-import { UserService } from '../providers/user.service';
-import { TokenService } from '../services/token/token.service';
 
 function isTokenExpiredError(error: HttpErrorResponse): boolean {
   return (
@@ -66,6 +66,7 @@ export function authInterceptor(
                 Authorization: `Bearer ${newToken}`,
               },
             });
+
             return next(requestWithToken);
           })
         );
@@ -87,11 +88,40 @@ export function authInterceptor(
       if (isTokenExpiredError(error)) {
         // Determine which token to refresh based on the token type
         if (tokenType === TokenType.USER) {
-          userService.signOut();
+          // Try to refresh the user token if we have a refresh token
+          const refreshToken = userService.getRefreshToken();
 
-          return throwError(
-            () => new Error('User authentication expired, please login again')
-          );
+          if (refreshToken) {
+            return tokenService.refreshUserAccessToken(refreshToken).pipe(
+              switchMap((tokens) => {
+                // Retry the request with the new token
+                const requestWithNewToken = req.clone({
+                  setHeaders: {
+                    Authorization: `Bearer ${tokens.accessToken}`,
+                  },
+                });
+
+                return next(requestWithNewToken);
+              }),
+              catchError((refreshError) => {
+                // If refresh fails, sign out and notify the user
+                console.error('Error refreshing user token:', refreshError);
+
+                userService.signOut();
+
+                return throwError(
+                  () => new Error('Session expired, please login again')
+                );
+              })
+            );
+          } else {
+            // No refresh token available, sign out
+            userService.signOut();
+
+            return throwError(
+              () => new Error('User authentication expired, please login again')
+            );
+          }
         } else {
           // App token expired - refresh it
           return tokenService.requestAppAccessToken().pipe(
@@ -101,6 +131,7 @@ export function authInterceptor(
                   Authorization: `Bearer ${newToken}`,
                 },
               });
+
               return next(requestWithNewToken);
             })
           );

@@ -2,7 +2,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DurationPipe } from '@src/app/pipes/duration.pipe';
-import { Album } from '@src/app/services/albums/Album';
+import { Album } from '@src/app/services/albums/album';
 import { AlbumsService } from '@src/app/services/albums/albums.service';
 import { Track } from '@src/app/services/albums/track';
 import { EMPTY, Observable, catchError, of, switchMap, tap } from 'rxjs';

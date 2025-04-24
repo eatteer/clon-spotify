@@ -1,4 +1,4 @@
-import { Album } from '@src/app/services/artists/Album';
+import { Album } from '@src/app/services/artists/album';
 import { Item } from '@src/app/services/artists/get-artist-albums.dto';
 
 export function mapGetArtisAlbumDtoToAlbum(dto: Item): Album {
