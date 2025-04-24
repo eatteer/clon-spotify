@@ -37,7 +37,7 @@ export class TokenService {
       })
       .pipe(
         map(({ access_token, refresh_token }) => {
-          this.userService.signInWith({
+          this.userService.setAccessTokenPair({
             accessToken: access_token,
             refreshToken: refresh_token,
           });
@@ -98,7 +98,7 @@ export class TokenService {
       })
       .pipe(
         map(({ access_token, refresh_token }) => {
-          this.userService.signInWith({
+          this.userService.setAccessTokenPair({
             accessToken: access_token,
             refreshToken: refresh_token,
           });

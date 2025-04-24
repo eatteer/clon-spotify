@@ -14,9 +14,9 @@ export class UserService {
   private accessToken: string = '';
   private refreshToken: string = '';
 
-  // public constructor() {
-  //   this.loadTokensFromStorage();
-  // }
+  public constructor() {
+    this.loadTokensFromStorage();
+  }
 
   private loadTokensFromStorage(): void {
     const storedTokens = localStorage.getItem(ACCESS_TOKEN_KEY);
@@ -50,7 +50,7 @@ export class UserService {
     this.refreshToken = token;
   }
 
-  public signInWith({
+  public setAccessTokenPair({
     accessToken,
     refreshToken,
   }: {
