@@ -9,19 +9,7 @@
     @for (playlist of playlists; track playlist.id) {
     <li>
       <a [href]="playlist.playlistUrl" target="_blank">
-        <div
-          class="flex lg:flex-col lg:p-2 gap-4 hover:bg-accent rounded transition-all"
-        >
-          <img
-            [src]="playlist.images[0]"
-            [alt]="playlist.name"
-            class="size-16 lg:w-full lg:h-full lg:aspect-square rounded object-cover"
-          />
-          <div>
-            <p class="font-bold line-clamp-1">{{ playlist.name }}</p>
-            <p class="line-clamp-1">{{ playlist.totalTracks }} tracks</p>
-          </div>
-        </div>
+        <app-playlist [playlist]="playlist" />
       </a>
     </li>
     } @empty {
@@ -43,24 +31,16 @@
 
   <!--  -->
   @if ((isUserLoading() || isPlaylistsLoading())) {
-  <div class="flex items-center justify-center p-8">
-    <div
-      class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"
-    ></div>
-  </div>
+  <app-loader />
   }
 
   <!--  -->
   @if (userError()) {
-  <div class="text-destructive mb-4" role="alert">
-    <p>{{ userError() }}</p>
-  </div>
+  <app-error-message [message]="userError()" />
   }
 
   <!--  -->
   @if (playlistsError()) {
-  <div class="text-destructive mb-4" role="alert">
-    <p>{{ playlistsError() }}</p>
-  </div>
+  <app-error-message [message]="playlistsError()" />
   }
 </main>

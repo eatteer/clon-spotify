@@ -1,0 +1,13 @@
+<div
+  class="flex lg:flex-col lg:p-2 gap-4 hover:bg-accent rounded transition-all"
+>
+  <img
+    [src]="playlist.images[0]"
+    [alt]="playlist.name"
+    class="size-16 lg:w-full lg:h-full lg:aspect-square rounded object-cover"
+  />
+  <div>
+    <p class="font-bold line-clamp-1">{{ playlist.name }}</p>
+    <p class="line-clamp-1">{{ playlist.totalTracks }} tracks</p>
+  </div>
+</div>

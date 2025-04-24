@@ -1,4 +1,4 @@
-import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,14 +7,22 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { TitleCaseArrayPipe } from '@src/app/pipes/title-case.pipe';
+import { ErrorMessageComponent } from '@src/app/components/ui/error-message/error-message.component';
+import { LoaderComponent } from '@src/app/components/ui/loader/loader.component';
+import { SearchResultComponent } from '@src/app/components/ui/search-result/search-result.component';
 import { Artist } from '@src/app/services/search/artist';
 import { SearchService } from '@src/app/services/search/search.service';
 import { Observable, catchError, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  imports: [AsyncPipe, DecimalPipe, TitleCaseArrayPipe, RouterLink],
+  imports: [
+    AsyncPipe,
+    RouterLink,
+    SearchResultComponent,
+    LoaderComponent,
+    ErrorMessageComponent,
+  ],
   templateUrl: './search.component.html',
   styleUrl: './search.component.css',
 })

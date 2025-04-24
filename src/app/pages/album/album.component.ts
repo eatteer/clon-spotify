@@ -7,7 +7,9 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DurationPipe } from '@src/app/pipes/duration.pipe';
+import { ErrorMessageComponent } from '@src/app/components/ui/error-message/error-message.component';
+import { LoaderComponent } from '@src/app/components/ui/loader/loader.component';
+import { TrackComponent } from '@src/app/components/ui/track/track.component';
 import { Album } from '@src/app/services/albums/album';
 import { AlbumsService } from '@src/app/services/albums/albums.service';
 import { Track } from '@src/app/services/albums/track';
@@ -15,7 +17,13 @@ import { EMPTY, Observable, catchError, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-album',
-  imports: [AsyncPipe, DatePipe, DurationPipe],
+  imports: [
+    AsyncPipe,
+    DatePipe,
+    TrackComponent,
+    LoaderComponent,
+    ErrorMessageComponent,
+  ],
   templateUrl: './album.component.html',
   styleUrl: './album.component.css',
 })

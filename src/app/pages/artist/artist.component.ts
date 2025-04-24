@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, DecimalPipe } from '@angular/common';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 import {
   Component,
   OnInit,
@@ -7,6 +7,9 @@ import {
   signal,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AlbumComponent } from '@src/app/components/ui/album/album.component';
+import { ErrorMessageComponent } from '@src/app/components/ui/error-message/error-message.component';
+import { LoaderComponent } from '@src/app/components/ui/loader/loader.component';
 import { TitleCaseArrayPipe } from '@src/app/pipes/title-case.pipe';
 import { Album } from '@src/app/services/artists/album';
 import { Artist } from '@src/app/services/artists/artist';
@@ -15,7 +18,15 @@ import { EMPTY, Observable, catchError, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-artist',
-  imports: [AsyncPipe, DatePipe, DecimalPipe, TitleCaseArrayPipe, RouterLink],
+  imports: [
+    AsyncPipe,
+    DecimalPipe,
+    TitleCaseArrayPipe,
+    RouterLink,
+    AlbumComponent,
+    LoaderComponent,
+    ErrorMessageComponent,
+  ],
   templateUrl: './artist.component.html',
   styleUrl: './artist.component.css',
 })

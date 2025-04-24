@@ -1,0 +1,18 @@
+<div
+  class="flex lg:flex-col lg:p-2 gap-4 hover:bg-accent rounded transition-all"
+>
+  <img
+    [src]="artist.image"
+    [alt]="artist.name"
+    class="size-16 lg:w-full lg:h-full lg:aspect-square rounded object-cover"
+  />
+  <div>
+    <p class="font-bold line-clamp-1">{{ artist.name }}</p>
+    <p class="text-sm line-clamp-1">
+      {{ artist.followers | number }} followers
+    </p>
+    <p class="text-sm line-clamp-1">
+      {{ artist.genres | titleCaseArray }}
+    </p>
+  </div>
+</div>

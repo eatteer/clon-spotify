@@ -1,5 +1,8 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, WritableSignal, inject, signal } from '@angular/core';
+import { ErrorMessageComponent } from '@src/app/components/ui/error-message/error-message.component';
+import { LoaderComponent } from '@src/app/components/ui/loader/loader.component';
+import { PlaylistComponent } from '@src/app/components/ui/playlist/playlist.component';
 import { SignInButtonComponent } from '@src/app/components/ui/sign-in-button/sign-in-button.component';
 import { UserService } from '@src/app/providers/user.service';
 import { Playlist } from '@src/app/services/users/playlist';
@@ -9,7 +12,13 @@ import { Observable, catchError, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  imports: [AsyncPipe, SignInButtonComponent],
+  imports: [
+    AsyncPipe,
+    SignInButtonComponent,
+    PlaylistComponent,
+    LoaderComponent,
+    ErrorMessageComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })

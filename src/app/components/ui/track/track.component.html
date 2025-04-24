@@ -1,0 +1,15 @@
+<a [href]="track.trackUrl" target="_blank">
+  <div
+    class="flex flex-row gap-4 justify-between items-center hover:bg-accent transition-all lg:py-2 lg:px-4 rounded"
+  >
+    <div class="flex flex-col">
+      <p class="font-bold line-clamp-1">{{ track.name }}</p>
+      <p class="line-clamp-1 text-muted-foreground">
+        {{ track.artists.join(", ") }}
+      </p>
+    </div>
+    <p class="text-sm line-clamp-1">
+      {{ track.duration | duration }}
+    </p>
+  </div>
+</a>

@@ -33,22 +33,8 @@
   }
   <ul class="flex flex-col gap-4 lg:gap-0">
     @for (track of tracks; track track.id) {
-    <li class="">
-      <a [href]="track.trackUrl" target="_blank">
-        <div
-          class="flex flex-row gap-4 justify-between items-center hover:bg-accent transition-all lg:py-2 lg:px-4 rounded"
-        >
-          <div class="flex flex-col">
-            <p class="font-bold line-clamp-1">{{ track.name }}</p>
-            <p class="line-clamp-1 text-muted-foreground">
-              {{ track.artists.join(", ") }}
-            </p>
-          </div>
-          <p class="text-sm line-clamp-1">
-            {{ track.duration | duration }}
-          </p>
-        </div>
-      </a>
+    <li>
+      <app-track [track]="track" />
     </li>
     } @empty {
     <p class="font-bold text-2xl px-4 mb-4">
@@ -60,24 +46,16 @@
 
   <!--  -->
   @if ((isAlbumLoading() || isTracksLoading())) {
-  <div class="flex items-center justify-center p-8">
-    <div
-      class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"
-    ></div>
-  </div>
+  <app-loader />
   }
 
   <!--  -->
   @if (albumError()) {
-  <div class="text-destructive mb-4 px-4" role="alert">
-    <p>{{ albumError() }}</p>
-  </div>
+  <app-error-message [message]="albumError()" [withPadding]="true" />
   }
 
   <!--  -->
   @if (tracksError()) {
-  <div class="text-destructive mb-4 px-4" role="alert">
-    <p>{{ tracksError() }}</p>
-  </div>
+  <app-error-message [message]="tracksError()" [withPadding]="true" />
   }
 </main>

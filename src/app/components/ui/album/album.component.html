@@ -1,0 +1,11 @@
+<div class="flex flex-col gap-4 lg:p-2 hover:bg-accent rounded transition-all">
+  <img
+    [src]="album.image"
+    [alt]="album.name"
+    class="w-full aspect-square rounded object-cover"
+  />
+  <div>
+    <p class="font-bold line-clamp-1">{{ album.name }}</p>
+    <p class="text-sm">{{ album.releaseDate | date }}</p>
+  </div>
+</div>

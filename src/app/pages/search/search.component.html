@@ -4,24 +4,7 @@
     @for (artist of artists; track artist.id) {
     <li>
       <a [routerLink]="['/artists', artist.id]">
-        <div
-          class="flex lg:flex-col lg:p-2 gap-4 hover:bg-accent rounded transition-all"
-        >
-          <img
-            [src]="artist.image"
-            [alt]="artist.name"
-            class="size-16 lg:w-full lg:h-full lg:aspect-square rounded object-cover"
-          />
-          <div>
-            <p class="font-bold line-clamp-1">{{ artist.name }}</p>
-            <p class="text-sm line-clamp-1">
-              {{ artist.followers | number }} followers
-            </p>
-            <p class="text-sm line-clamp-1">
-              {{ artist.genres | titleCaseArray }}
-            </p>
-          </div>
-        </div>
+        <app-search-result [artist]="artist" />
       </a>
     </li>
     } @empty {
@@ -32,17 +15,11 @@
 
   <!--  -->
   @if (isArtistsLoading()) {
-  <div class="flex items-center justify-center p-8">
-    <div
-      class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"
-    ></div>
-  </div>
+  <app-loader />
   }
 
   <!--  -->
   @if (artistsError()) {
-  <div class="text-destructive mb-4" role="alert">
-    <p>{{ artistsError() }}</p>
-  </div>
+  <app-error-message [message]="artistsError()" />
   }
 </main>

@@ -24,19 +24,7 @@
     @for (album of albums; track album.id) {
     <li>
       <a [routerLink]="['/albums', album.id]">
-        <div
-          class="flex flex-col gap-4 lg:p-2 hover:bg-accent rounded transition-all"
-        >
-          <img
-            [src]="album.image"
-            [alt]="album.name"
-            class="w-full aspect-square rounded object-cover"
-          />
-          <div>
-            <p class="font-bold line-clamp-1">{{ album.name }}</p>
-            <p class="text-sm">{{ album.releaseDate | date }}</p>
-          </div>
-        </div>
+        <app-album [album]="album" />
       </a>
     </li>
     } @empty {
@@ -49,23 +37,15 @@
 
   <!-- Loading indicators -->
   @if ((isArtistLoading() || isAlbumsLoading())) {
-  <div class="flex items-center justify-center p-8">
-    <div
-      class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"
-    ></div>
-  </div>
+  <app-loader />
   }
 
   <!--  -->
   @if (artistError()) {
-  <div class="text-destructive mb-4" role="alert">
-    <p>{{ artistError() }}</p>
-  </div>
+  <app-error-message [message]="artistError()" />
   }
   <!--  -->
   @if (albumsError()) {
-  <div class="text-destructive mb-4" role="alert">
-    <p>{{ albumsError() }}</p>
-  </div>
+  <app-error-message [message]="albumsError()" />
   }
 </main>
