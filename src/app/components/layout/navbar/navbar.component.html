@@ -7,9 +7,25 @@
   >
     @if(!isRootRoute()) {
     <app-navigate-back-button />
+    <a
+      routerLink="/"
+      class="flex justify-center items-center cursor-pointer bg-muted p-2 rounded-full"
+    >
+      <span class="material-symbols-outlined"> home </span>
+    </a>
     } @else {
-    <span class="material-symbols-outlined"> music_note </span>
+    <a
+      routerLink="/"
+      class="flex justify-center items-center cursor-pointer bg-muted p-2 rounded-full"
+    >
+      <span class="material-symbols-outlined"> home</span>
+    </a>
     }
     <app-search-input (search)="searchArtist($event)" />
+    @if(!isLoggedIn() ){
+    <app-sign-in-button />
+    } @else {
+    <app-sign-out-button />
+    }
   </div>
 </nav>

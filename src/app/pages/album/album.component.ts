@@ -1,11 +1,11 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DurationPipe } from '@src/app/pipes/duration.pipe';
 import { Album } from '@src/app/services/albums/Album';
 import { AlbumsService } from '@src/app/services/albums/albums.service';
 import { Track } from '@src/app/services/albums/track';
-import { Observable, switchMap } from 'rxjs';
+import { EMPTY, Observable, catchError, of, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-album',
@@ -13,25 +13,59 @@ import { Observable, switchMap } from 'rxjs';
   templateUrl: './album.component.html',
   styleUrl: './album.component.css',
 })
-export class AlbumComponent {
-  private readonly route = inject(ActivatedRoute);
-  private readonly albumsService = inject(AlbumsService);
+export class AlbumComponent implements OnInit {
+  private readonly route: ActivatedRoute = inject(ActivatedRoute);
+  private readonly albumsService: AlbumsService = inject(AlbumsService);
+
+  public isAlbumLoading = signal(true);
+  public isTracksLoading = signal(false);
+
+  public albumError = signal<string | null>('Album error');
+  public tracksError = signal<string | null>(null);
 
   public album$: Observable<Album> = new Observable<Album>();
   public tracks$: Observable<Track[]> = new Observable<Track[]>();
 
   public ngOnInit(): void {
     this.album$ = this.route.params.pipe(
+      tap(() => {
+        this.isAlbumLoading.set(true);
+        this.albumError.set(null);
+      }),
       switchMap((params) => {
-        const albumId = params['id'];
-        return this.albumsService.getInfo(albumId);
+        const albumId: string = params['id'];
+        return this.albumsService.getInfo(albumId).pipe(
+          tap(() => this.isAlbumLoading.set(false)),
+          catchError((error) => {
+            this.isAlbumLoading.set(false);
+            this.albumError.set(
+              'Unable to load album information. Please try again later.'
+            );
+            console.error('Error loading album information:', error);
+            return EMPTY;
+          })
+        );
       })
     );
 
     this.tracks$ = this.route.params.pipe(
+      tap(() => {
+        this.isTracksLoading.set(true);
+        this.tracksError.set(null);
+      }),
       switchMap((params) => {
-        const albumId = params['id'];
-        return this.albumsService.getTracks(albumId);
+        const albumId: string = params['id'];
+        return this.albumsService.getTracks(albumId).pipe(
+          tap(() => this.isTracksLoading.set(false)),
+          catchError((error) => {
+            this.isTracksLoading.set(false);
+            this.tracksError.set(
+              'Unable to load tracks. Please try again later.'
+            );
+            console.error('Error loading tracks:', error);
+            return of([]);
+          })
+        );
       })
     );
   }

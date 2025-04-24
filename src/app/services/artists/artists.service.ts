@@ -13,7 +13,7 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class ArtistsService {
-  private readonly http = inject(HttpClient);
+  private readonly http: HttpClient = inject(HttpClient);
 
   public getInfo(artistId: string): Observable<Artist> {
     return this.http

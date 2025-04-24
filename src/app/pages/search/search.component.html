@@ -1,5 +1,5 @@
 <main class="max-w-5xl mx-auto p-4">
-  @if (artists$ | async; as artists) { @if (artists.length > 0) {
+  @if (artists$ | async; as artists) {
   <ul class="flex flex-col lg:grid lg:grid-cols-4 gap-4">
     @for (artist of artists; track artist.id) {
     <li>
@@ -15,7 +15,7 @@
           <div>
             <p class="font-bold line-clamp-1">{{ artist.name }}</p>
             <p class="text-sm line-clamp-1">
-              {{ artist.followers | number }} seguidores
+              {{ artist.followers | number }} followers
             </p>
             <p class="text-sm line-clamp-1">
               {{ artist.genres | titleCaseArray }}
@@ -24,9 +24,25 @@
         </div>
       </a>
     </li>
+    } @empty {
+    <p>No artists found for this search.</p>
     }
   </ul>
-  } @else {
-  <p>No artists found for this search.</p>
-  } }
+  }
+
+  <!--  -->
+  @if (isArtistsLoading()) {
+  <div class="flex items-center justify-center p-8">
+    <div
+      class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"
+    ></div>
+  </div>
+  }
+
+  <!--  -->
+  @if (artistsError()) {
+  <div class="text-destructive mb-4" role="alert">
+    <p>{{ artistsError() }}</p>
+  </div>
+  }
 </main>

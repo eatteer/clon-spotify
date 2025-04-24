@@ -5,38 +5,77 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { TOKEN_TYPE } from '@src/app/interceptors/token-context';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
-import { TokenService } from '../providers/token.service';
+import { AppService } from '../providers/app.service';
+import { UserService } from '../providers/user.service';
+import { TokenService } from '../services/token/token.service';
+
+function isTokenExpiredError(error: HttpErrorResponse): boolean {
+  return (
+    error.status === 401 &&
+    error.error?.error?.message === 'The access token expired'
+  );
+}
+
+export enum TokenType {
+  APP = 'app',
+  USER = 'user',
+}
 
 export function authInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ): Observable<HttpEvent<unknown>> {
-  const tokenService = inject(TokenService);
+  const tokenService: TokenService = inject(TokenService);
+  const appSessionService: AppService = inject(AppService);
+  const userService: UserService = inject(UserService);
 
   // Skip adding the token for the token refresh request itself
   if (req.url === 'https://accounts.spotify.com/api/token') {
     return next(req);
   }
 
-  // If we don't have a token yet, get one first
-  if (!tokenService.isTokenValid()) {
-    return tokenService.refreshToken().pipe(
-      switchMap((token) => {
-        const requestWithToken = req.clone({
-          setHeaders: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        return next(requestWithToken);
-      })
-    );
+  const tokenType = req.context.get(TOKEN_TYPE);
+
+  // Determine which token to use based on the requested token type
+  let token: string;
+
+  switch (tokenType) {
+    case TokenType.USER:
+      // For user-specific endpoints, require user token
+      token = userService.getAccessToken();
+
+      if (!token) {
+        // If user token is required but not available, return an error
+        return throwError(() => new Error('User authentication required'));
+      }
+
+      break;
+    case TokenType.APP:
+    default:
+      // For public endpoints, use app token
+      token = appSessionService.getAccessToken();
+
+      if (!token) {
+        // If app token is not available, request a new one
+        return tokenService.requestAppAccessToken().pipe(
+          switchMap((newToken) => {
+            const requestWithToken = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${newToken}`,
+              },
+            });
+            return next(requestWithToken);
+          })
+        );
+      }
+      break;
   }
 
-  // We have a token, proceed with the request
   const requestWithToken = req.clone({
     setHeaders: {
-      Authorization: `Bearer ${tokenService.getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -46,26 +85,29 @@ export function authInterceptor(
 
       // Check if the error is due to an expired token
       if (isTokenExpiredError(error)) {
-        return tokenService.refreshToken().pipe(
-          switchMap((newToken) => {
-            const requestWithNewToken = req.clone({
-              setHeaders: {
-                Authorization: `Bearer ${newToken}`,
-              },
-            });
-            return next(requestWithNewToken);
-          })
-        );
+        // Determine which token to refresh based on the token type
+        if (tokenType === TokenType.USER) {
+          userService.signOut();
+
+          return throwError(
+            () => new Error('User authentication expired, please login again')
+          );
+        } else {
+          // App token expired - refresh it
+          return tokenService.requestAppAccessToken().pipe(
+            switchMap((newToken) => {
+              const requestWithNewToken = req.clone({
+                setHeaders: {
+                  Authorization: `Bearer ${newToken}`,
+                },
+              });
+              return next(requestWithNewToken);
+            })
+          );
+        }
       }
 
       return throwError(() => error);
     })
-  );
-}
-
-function isTokenExpiredError(error: HttpErrorResponse): boolean {
-  return (
-    error.status === 401 &&
-    error.error?.error?.message === 'The access token expired'
   );
 }

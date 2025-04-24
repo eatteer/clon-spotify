@@ -11,7 +11,7 @@ import { Observable, map } from 'rxjs';
   providedIn: 'root',
 })
 export class SearchService {
-  private readonly http = inject(HttpClient);
+  private readonly http: HttpClient = inject(HttpClient);
 
   public searchArtist(query: string): Observable<Artist[]> {
     return this.http

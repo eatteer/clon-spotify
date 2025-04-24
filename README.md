@@ -1,59 +1,39 @@
-# ClonSpotify
+# Clon Spotify
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+## Recommendations
 
-## Development server
+1. Use pnpm when developing
 
-To start a local development server, run:
+## Production
 
-```bash
-ng serve
+Make sure you have Docker installed.
+
+Duplicate the `src/environments/environment.example.ts` file and rename it to `src/environments/environment.ts`, then replace the port of the `SPOTIFY_REDIRECT_URI` from `8000` to `80`.
+
+```typescript
+export const environment = {
+  // Rest of the environment variables
+  // SPOTIFY_REDIRECT_URI: 'http://127.0.0.1:8000/callback',
+  SPOTIFY_REDIRECT_URI: 'http://127.0.0.1:80/callback',
+};
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Go to your Spotify App in your Spotify Dashboard and:
 
-## Code scaffolding
+1. Add to the `Redirect URIs` list the `SPOTIFY_REDIRECT_URI` value as it is in the `environment.ts` file.
+2. Copy the `Client ID` and `Client secret` and paste them in the `src/environments/environment.ts` file, respectively in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Now you can build and run the app using `docker compose up --build -d`.
 
-```bash
-ng generate component component-name
-```
+Open your browser and visit `http://127.0.0.1`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Development
 
-```bash
-ng generate --help
-```
+Duplicate the `src/environments/environment.example.ts` file and rename it to `src/environments/environment.development.ts`.
 
-## Building
+Go to your Spotify App in your Spotify Dashboard and:
 
-To build the project run:
+1. Add to the `Redirect URIs` list the `SPOTIFY_REDIRECT_URI` value as it is in the `environment.development.ts` file.
+2. Copy the `Client ID` and `Client secret` and paste them in the `src/environments/environment.development.ts` file, respectively in `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET`.
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Now you can install dependencies using `pnpm i` and run the app using `pnpm start`.
