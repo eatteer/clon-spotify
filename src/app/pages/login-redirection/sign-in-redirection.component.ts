@@ -32,8 +32,10 @@ export class SignInRedirectionComponent implements OnInit {
       .requestUserAccessToken(code)
       .pipe(
         switchMap(({ accessToken, refreshToken }) => {
-          this.userService.setAccessToken(accessToken);
-          this.userService.setRefreshToken(refreshToken);
+          this.userService.signInWith({
+            accessToken,
+            refreshToken,
+          });
 
           return this.usersService.getProfile();
         }),

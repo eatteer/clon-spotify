@@ -36,13 +36,15 @@ export class TokenService {
         },
       })
       .pipe(
-        map((response) => {
-          this.userService.setAccessToken(response.access_token);
-          this.userService.setRefreshToken(response.refresh_token);
+        map(({ access_token, refresh_token }) => {
+          this.userService.signInWith({
+            accessToken: access_token,
+            refreshToken: refresh_token,
+          });
 
           return {
-            accessToken: response.access_token,
-            refreshToken: response.refresh_token,
+            accessToken: access_token,
+            refreshToken: refresh_token,
           };
         }),
         catchError((error) => {
@@ -95,13 +97,15 @@ export class TokenService {
         },
       })
       .pipe(
-        map((response) => {
-          this.userService.setAccessToken(response.access_token);
-          this.userService.setRefreshToken(response.refresh_token);
+        map(({ access_token, refresh_token }) => {
+          this.userService.signInWith({
+            accessToken: access_token,
+            refreshToken: refresh_token,
+          });
 
           return {
-            accessToken: response.access_token,
-            refreshToken: response.refresh_token,
+            accessToken: access_token,
+            refreshToken: refresh_token,
           };
         })
       );
