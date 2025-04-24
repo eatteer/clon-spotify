@@ -1,5 +1,22 @@
 # Clon Spotify
 
+## Screenshots
+
+### Desktop
+![image](https://github.com/user-attachments/assets/ee490bcb-c5b4-4fbc-b333-e373680d2349)
+![image](https://github.com/user-attachments/assets/dfe00687-b084-4d3f-ae31-331a5bdb328e)
+![image](https://github.com/user-attachments/assets/1ebc6053-ef7a-4d49-b629-227b97f1998b)
+![image](https://github.com/user-attachments/assets/d968357c-e34d-4dac-9eca-bd780d6e6887)
+![image](https://github.com/user-attachments/assets/6d0a671f-a2c9-43c6-895c-ecd78e63c96e)
+
+### Mobile
+
+![image](https://github.com/user-attachments/assets/863184ec-a14a-4d60-a39e-89cf1d07e0e2)
+![image](https://github.com/user-attachments/assets/940c3dad-7792-4ce3-b509-28d3c0d1dc30)
+![image](https://github.com/user-attachments/assets/7ebcdf08-6960-46ad-ac27-e61ff23004e4)
+![image](https://github.com/user-attachments/assets/d2abd74e-7e4b-4609-a0e6-d3dbf0ac8ad5)
+![image](https://github.com/user-attachments/assets/b85f3dee-1f81-4d05-9647-b0c5bbf3ff04)
+
 ## Considerations
 
 1. I did not complete all the playlist management task. I'm just showing the user playlist.
