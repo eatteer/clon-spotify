@@ -8,7 +8,7 @@
 
 ## Inspiration
 
-Figma designs, Spotify Web Application (Mobile and Desktop), Spotify Mobile Application and the followign resources for inspiration, but did not follow them to the letter:
+I used the Spotify Web Application (Mobile and Desktop), the Spotify Mobile Application and the following Figma resources for inspiration, but did not follow them to the letter:
 
 - [Spotify UI - Free UI Kit (Recreated) (Community)](https://www.figma.com/design/N1qfVzyCk7v2KG5cnGsLsN/Spotify-UI---Free-UI-Kit--Recreated---Community-?node-id=0-1890&t=d0YdknV6ZXuvERlS-0)
 
