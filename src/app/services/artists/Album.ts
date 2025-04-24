@@ -1,5 +1,3 @@
-import { Artist } from '@src/app/services/search/artist';
-
 export type Album = {
   id: string;
   name: string;

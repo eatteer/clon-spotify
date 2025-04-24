@@ -8,7 +8,7 @@ import { Component, inject } from '@angular/core';
   styleUrl: './navigate-back-button.component.css',
 })
 export class NavigateBackButtonComponent {
-  private readonly location = inject(Location);
+  private readonly location: Location = inject(Location);
 
   public navigateBack(): void {
     this.location.back();

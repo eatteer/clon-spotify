@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AccessTokenPair } from '@src/app/services/token/access-token-pair';
 import { UserProfile } from '@src/app/services/users/user-profile';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -19,16 +20,19 @@ export class UserService {
   }
 
   private loadTokensFromStorage(): void {
-    const storedTokens = localStorage.getItem(ACCESS_TOKEN_KEY);
+    const storedTokens: string | null = localStorage.getItem(ACCESS_TOKEN_KEY);
 
     if (storedTokens) {
       try {
-        const { accessToken, refreshToken } = JSON.parse(storedTokens);
+        const { accessToken, refreshToken } = JSON.parse(
+          storedTokens
+        ) as AccessTokenPair;
 
         this.setAccessToken(accessToken);
         this.setRefreshToken(refreshToken);
       } catch (error) {
         console.error('Error parsing stored tokens:', error);
+
         localStorage.removeItem(ACCESS_TOKEN_KEY);
       }
     }
@@ -60,13 +64,12 @@ export class UserService {
     this.setAccessToken(accessToken);
     this.setRefreshToken(refreshToken);
 
-    localStorage.setItem(
-      ACCESS_TOKEN_KEY,
-      JSON.stringify({
-        accessToken,
-        refreshToken,
-      })
-    );
+    const accessTokenPair: AccessTokenPair = {
+      accessToken,
+      refreshToken,
+    };
+
+    localStorage.setItem(ACCESS_TOKEN_KEY, JSON.stringify(accessTokenPair));
   }
 
   public isTokenValid(): boolean {
@@ -82,8 +85,9 @@ export class UserService {
   }
 
   public signOut(): void {
-    this.accessToken = '';
-    this.refreshToken = '';
+    this.setAccessToken('');
+    this.setRefreshToken('');
+
     this.userProfile.next(null);
 
     localStorage.removeItem(ACCESS_TOKEN_KEY);

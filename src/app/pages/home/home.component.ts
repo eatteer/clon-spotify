@@ -1,8 +1,9 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { SignInButtonComponent } from '@src/app/components/ui/sign-in-button/sign-in-button.component';
 import { UserService } from '@src/app/providers/user.service';
 import { Playlist } from '@src/app/services/users/playlist';
+import { UserProfile } from '@src/app/services/users/user-profile';
 import { UsersService } from '@src/app/services/users/users.service';
 import { Observable, catchError, of, switchMap, tap } from 'rxjs';
 
@@ -16,26 +17,31 @@ export class HomeComponent {
   private readonly userService: UserService = inject(UserService);
   private readonly usersService: UsersService = inject(UsersService);
 
-  public isUserLoading = signal(true);
-  public isPlaylistsLoading = signal(false);
+  public isUserLoading: WritableSignal<boolean> = signal(true);
+  public isPlaylistsLoading: WritableSignal<boolean> = signal(false);
 
-  public userError = signal<string | null>(null);
-  public playlistsError = signal<string | null>(null);
+  public userError: WritableSignal<string | null> = signal<string | null>(null);
 
-  public user$ = this.userService.getUserProfile().pipe(
-    tap(() => this.isUserLoading.set(false)),
-    catchError((error) => {
-      this.isUserLoading.set(false);
-
-      this.userError.set(
-        'Unable to load user profile. Please try again later.'
-      );
-
-      console.error('Error loading user profile:', error);
-
-      return of(null);
-    })
+  public playlistsError: WritableSignal<string | null> = signal<string | null>(
+    null
   );
+
+  public user$: Observable<UserProfile | null> = this.userService
+    .getUserProfile()
+    .pipe(
+      tap(() => this.isUserLoading.set(false)),
+      catchError((error) => {
+        this.isUserLoading.set(false);
+
+        this.userError.set(
+          'Unable to load user profile. Please try again later.'
+        );
+
+        console.error('Error loading user profile:', error);
+
+        return of(null);
+      })
+    );
 
   public playlists$: Observable<Playlist[]> = new Observable<Playlist[]>();
 

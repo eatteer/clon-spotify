@@ -8,7 +8,7 @@ import { UserService } from '@src/app/providers/user.service';
   styleUrl: './sign-out-button.component.css',
 })
 export class SignOutButtonComponent {
-  private readonly userService = inject(UserService);
+  private readonly userService: UserService = inject(UserService);
 
   public signOut() {
     this.userService.signOut();

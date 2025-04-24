@@ -1,5 +1,11 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DurationPipe } from '@src/app/pipes/duration.pipe';
 import { Album } from '@src/app/services/albums/album';
@@ -17,11 +23,16 @@ export class AlbumComponent implements OnInit {
   private readonly route: ActivatedRoute = inject(ActivatedRoute);
   private readonly albumsService: AlbumsService = inject(AlbumsService);
 
-  public isAlbumLoading = signal(true);
-  public isTracksLoading = signal(false);
+  public isAlbumLoading: WritableSignal<boolean> = signal(true);
+  public isTracksLoading: WritableSignal<boolean> = signal(false);
 
-  public albumError = signal<string | null>('Album error');
-  public tracksError = signal<string | null>(null);
+  public albumError: WritableSignal<string | null> = signal<string | null>(
+    null
+  );
+
+  public tracksError: WritableSignal<string | null> = signal<string | null>(
+    null
+  );
 
   public album$: Observable<Album> = new Observable<Album>();
   public tracks$: Observable<Track[]> = new Observable<Track[]>();
@@ -34,14 +45,18 @@ export class AlbumComponent implements OnInit {
       }),
       switchMap((params) => {
         const albumId: string = params['id'];
+
         return this.albumsService.getInfo(albumId).pipe(
           tap(() => this.isAlbumLoading.set(false)),
           catchError((error) => {
             this.isAlbumLoading.set(false);
+
             this.albumError.set(
               'Unable to load album information. Please try again later.'
             );
+
             console.error('Error loading album information:', error);
+
             return EMPTY;
           })
         );

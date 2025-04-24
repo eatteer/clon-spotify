@@ -12,9 +12,9 @@ const DEBOUNCE_TIME = 800;
 })
 export class SearchInputComponent {
   @Output()
-  public search = new EventEmitter<string>();
+  public search: EventEmitter<string> = new EventEmitter<string>();
 
-  private readonly searchSubject = new Subject<string>();
+  private readonly searchSubject: Subject<string> = new Subject<string>();
 
   constructor() {
     this.searchSubject
@@ -25,7 +25,8 @@ export class SearchInputComponent {
   }
 
   public onSearchInputChange(event: Event): void {
-    const searchTerm = (event.target as HTMLInputElement).value;
+    const searchTerm: string = (event.target as HTMLInputElement).value;
+
     this.searchSubject.next(searchTerm);
   }
 }

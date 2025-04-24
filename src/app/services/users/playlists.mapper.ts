@@ -5,7 +5,10 @@ export function mapGetUserPlaylistsDtoToPlaylists(dto: Item): Playlist {
   return {
     id: dto.id,
     name: dto.name,
-    images: dto.images.map((image) => image.url),
+    images:
+      dto.images.length > 0
+        ? dto.images.map((image) => image.url)
+        : ['/img-placeholder.jpg'],
     totalTracks: dto.tracks.total,
     playlistUrl: dto.external_urls.spotify,
   };

@@ -12,5 +12,5 @@ export class SignInButtonComponent {
   @Input()
   public variant: 'primary' | 'rounded' = 'rounded';
 
-  public signInHref = `https://accounts.spotify.com/authorize?client_id=${environment.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${environment.SPOTIFY_REDIRECT_URI}&scope=user-read-private user-read-email playlist-read-private playlist-read-collaborative`;
+  public signInHref: string = `https://accounts.spotify.com/authorize?client_id=${environment.SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${environment.SPOTIFY_REDIRECT_URI}&scope=user-read-private user-read-email playlist-read-private playlist-read-collaborative`;
 }

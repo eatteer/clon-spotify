@@ -11,18 +11,6 @@ import { UserService } from '@src/app/providers/user.service';
 import { TokenService } from '@src/app/services/token/token.service';
 import { Observable, catchError, switchMap, throwError } from 'rxjs';
 
-function isTokenExpiredError(error: HttpErrorResponse): boolean {
-  return (
-    error.status === 401 &&
-    error.error?.error?.message === 'The access token expired'
-  );
-}
-
-export enum TokenType {
-  APP = 'app',
-  USER = 'user',
-}
-
 export function authInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
@@ -141,4 +129,16 @@ export function authInterceptor(
       return throwError(() => error);
     })
   );
+}
+
+function isTokenExpiredError(error: HttpErrorResponse): boolean {
+  return (
+    error.status === 401 &&
+    error.error?.error?.message === 'The access token expired'
+  );
+}
+
+export enum TokenType {
+  APP = 'app',
+  USER = 'user',
 }

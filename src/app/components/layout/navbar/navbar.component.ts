@@ -26,10 +26,10 @@ export class NavbarComponent {
     this.isScrolled = window.scrollY > 0;
   }
 
-  private readonly router = inject(Router);
-  private readonly userService = inject(UserService);
+  private readonly router: Router = inject(Router);
+  private readonly userService: UserService = inject(UserService);
 
-  public isScrolled = false;
+  public isScrolled: boolean = false;
 
   public searchArtist(query: string) {
     if (query.trim() === '') return;

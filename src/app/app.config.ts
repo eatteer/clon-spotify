@@ -14,7 +14,7 @@ import { routes } from '@src/app/app.routes';
 import { authInterceptor } from '@src/app/interceptors/auth.interceptor';
 import { UserService } from '@src/app/providers/user.service';
 import { UsersService } from '@src/app/services/users/users.service';
-import { EMPTY, catchError, of, switchMap, tap } from 'rxjs';
+import { EMPTY, catchError, of, tap } from 'rxjs';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -12,13 +12,13 @@ import { catchError, map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TokenService {
-  private readonly http = inject(HttpClient);
-  private readonly appService = inject(AppService);
-  private readonly userService = inject(UserService);
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly appService: AppService = inject(AppService);
+  private readonly userService: UserService = inject(UserService);
 
-  private readonly clientId = environment.SPOTIFY_CLIENT_ID;
-  private readonly clientSecret = environment.SPOTIFY_CLIENT_SECRET;
-  private readonly endpoint = `https://accounts.spotify.com/api/token`;
+  private readonly clientId: string = environment.SPOTIFY_CLIENT_ID;
+  private readonly clientSecret: string = environment.SPOTIFY_CLIENT_SECRET;
+  private readonly endpoint: string = `https://accounts.spotify.com/api/token`;
 
   public requestUserAccessToken(code: string): Observable<AccessTokenPair> {
     const urlencoded: URLSearchParams = new URLSearchParams();
@@ -49,6 +49,7 @@ export class TokenService {
         }),
         catchError((error) => {
           console.error('Error requesting user access token:', error);
+
           return throwError(() => new Error('Failed to get user access token'));
         })
       );

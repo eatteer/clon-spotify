@@ -24,7 +24,9 @@ export class SignInRedirectionComponent implements OnInit {
 
     if (!code) {
       console.error('No code found in URL');
+
       this.router.navigate(['/']);
+
       return;
     }
 
@@ -41,6 +43,7 @@ export class SignInRedirectionComponent implements OnInit {
         }),
         switchMap((userProfile) => {
           this.userService.setUserProfile(userProfile);
+
           return this.router.navigate(['/']);
         })
       )
